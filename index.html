@@ -511,9 +511,9 @@
             </div>
 
             <div class="poster-caption">
-               <div class="cation-label"><strong>📅 프로그램 신청 안내</strong></div>
+               <div class="caption-label"><strong>📅 프로그램 신청 안내</strong></div>
               <p>
-                <strong>  ✳️ 2026년 3월 23일(월) 오전 10시 오픈 ✳️</strong> <br>
+                <strong>  ✳️ 2026년 3월 24일(화) 오픈 ✳️</strong> <br>
                 &nbsp;&nbsp;&nbsp;- 성우와 함께하는 문해력 낭독 클래스 1기<br>
                 &nbsp;&nbsp;&nbsp;- 내 감정을 그리는 마음 톡톡 거울 아트<br>
                 &nbsp;&nbsp;&nbsp;- 나를 빛나게 하는 스타일링&이미지 메이킹                
@@ -525,7 +525,7 @@
                 &nbsp;&nbsp;&nbsp;- 건강한 친환경 화장품 만들기                
               </p>
               <br>
-              <div class="cation-label"><strong>💡 운영안내</strong></div>
+              <div class="caption-label"><strong>💡 운영안내</strong></div>
               <p>
                 프로그램별 신청은 조기 마감될 수 있으며,<br />
                 세부 일정 및 유의사항은 각 신청 폼에서 확인하실 수 있습니다.
@@ -597,7 +597,7 @@
                     data-title="마음 톡톡 거울아">
                       프로그램 상세 정보 확인
                   </button>
-                  <a class="btn btn-primary" href="https://forms.gle/2owL8duwkFnmBAqT9" target="_blank" rel="noopener noreferrer">프로그램 상세 정보 확인 </a>
+                  <a class="btn btn-primary" href="https://forms.gle/2owL8duwkFnmBAqT9" target="_blank" rel="noopener noreferrer"> 바로 신청하기 </a>
                 </div>
               </article>
 
@@ -620,7 +620,7 @@
                     data-title="나를 빛나게 하는 스타일링">
                       프로그램 상세 정보 확인
                    </button>
-                   <a class="btn btn-primary" href="https://forms.gle/GhkYpA4yKBsLhDDLA" target="_blank" rel="noopener noreferrer">프로그램 상세 정보 확인</a>
+                   <a class="btn btn-primary" href="https://forms.gle/GhkYpA4yKBsLhDDLA" target="_blank" rel="noopener noreferrer"> 바로 신청하기 </a>
                 </div>
               </article>
             </div>
@@ -657,52 +657,75 @@
       <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="scheduleModalTitle">
         <button type="button" class="modal-close" id="closeScheduleModal" aria-label="팝업 닫기">×</button>
         <div class="modal-body">
-          <img src="poster2.jpg" alt="프로그램 일정표" class="modal-image" />
+          <img src="poster2.jpg" alt="프로그램 일정표" class="modal-image" id="modalImage" />
         </div>
       </div>
     </div>
 
+
+    <!--
+    버튼 싱행 모션 관련 스크립트
+    -->
     <script>
-      const scheduleModal = document.getElementById("scheduleModal");
-      const openScheduleModal = document.getElementById("openScheduleModal");
-      const openScheduleModalMobile = document.getElementById("openScheduleModalMobile");
-      const closeScheduleModal = document.getElementById("closeScheduleModal");
+  const scheduleModal = document.getElementById("scheduleModal");
+  const modalImage = document.getElementById("modalImage");
+  const openScheduleModal = document.getElementById("openScheduleModal");
+  const openScheduleModalMobile = document.getElementById("openScheduleModalMobile");
+  const closeScheduleModal = document.getElementById("closeScheduleModal");
+  const detailTriggers = document.querySelectorAll(".detail-trigger");
 
-      if (scheduleModal && closeScheduleModal) {
-        const openModal = () => {
-          scheduleModal.classList.add("is-open");
-          scheduleModal.setAttribute("aria-hidden", "false");
-          document.body.style.overflow = "hidden";
-        };
+  if (scheduleModal && closeScheduleModal && modalImage) {
+    const openModal = (imageSrc, imageAlt) => {
+      modalImage.src = imageSrc;
+      modalImage.alt = imageAlt;
+      scheduleModal.classList.add("is-open");
+      scheduleModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    };
 
-        const closeModal = () => {
-          scheduleModal.classList.remove("is-open");
-          scheduleModal.setAttribute("aria-hidden", "true");
-          document.body.style.overflow = "";
-        };
+    const closeModal = () => {
+      scheduleModal.classList.remove("is-open");
+      scheduleModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    };
 
-        if (openScheduleModal) {
-          openScheduleModal.addEventListener("click", openModal);
-        }
+    if (openScheduleModal) {
+      openScheduleModal.addEventListener("click", () => {
+        openModal("poster2.jpg", "프로그램 일정표");
+      });
+    }
 
-        if (openScheduleModalMobile) {
-          openScheduleModalMobile.addEventListener("click", openModal);
-        }
+    if (openScheduleModalMobile) {
+      openScheduleModalMobile.addEventListener("click", () => {
+        openModal("poster2.jpg", "프로그램 일정표");
+      });
+    }
 
-        closeScheduleModal.addEventListener("click", closeModal);
+    detailTriggers.forEach((button) => {
+      button.addEventListener("click", () => {
+        const imageSrc = button.dataset.image;
+        const imageAlt = button.dataset.title || "프로그램 상세 정보";
+        openModal(imageSrc, imageAlt);
+      });
+    });
 
-        scheduleModal.addEventListener("click", (event) => {
-          if (event.target === scheduleModal) {
-            closeModal();
-          }
-        });
+    closeScheduleModal.addEventListener("click", closeModal);
 
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape" && scheduleModal.classList.contains("is-open")) {
-            closeModal();
-          }
-        });
+    scheduleModal.addEventListener("click", (event) => {
+      if (event.target === scheduleModal) {
+        closeModal();
       }
-    </script>
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && scheduleModal.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+  }
+</script>
+    
+    
+    
   </body>
 </html>
